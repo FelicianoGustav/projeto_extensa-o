@@ -1,0 +1,2200 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Memórias em Peças</title>
+
+
+    <style>
+        :root {
+            color-scheme: light;
+            --fundo: #83cef6;
+            --superficie: rgba(255, 255, 255, 0.9);
+            --superficie-elevada: #edf8ff;
+            --borda: rgba(57, 119, 158, 0.24);
+            --texto: #173b58;
+            --texto-suave: #385e7a;
+            --menta: #087e77;
+            --lilas: #6652a3;
+            --coral: #bd4f42;
+            --amarelo: #855600;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            position: relative;
+            min-height: 100vh;
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            color: var(--texto);
+            background: linear-gradient(180deg, #72c8f4 0%, #9edafb 48%, #d8efff 100%);
+            overflow-x: hidden;
+        }
+
+        .ceu-animado {
+            position: fixed;
+            z-index: 0;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .nuvem {
+            position: absolute;
+            top: var(--altura);
+            left: -390px;
+            width: var(--largura);
+            height: var(--espessura);
+            opacity: var(--opacidade, 0.72);
+            background: rgba(255, 255, 255, 0.94);
+            border-radius: 999px;
+            filter: drop-shadow(0 8px 12px rgba(45, 119, 164, 0.12));
+            animation: atravessar-ceu var(--duracao) linear var(--atraso) infinite;
+            will-change: left;
+        }
+
+        .nuvem::before,
+        .nuvem::after {
+            position: absolute;
+            content: "";
+            background: inherit;
+            border-radius: 50%;
+        }
+
+        .nuvem::before {
+            width: 48%;
+            height: 185%;
+            top: -86%;
+            left: 17%;
+        }
+
+        .nuvem::after {
+            width: 35%;
+            height: 140%;
+            top: -55%;
+            right: 17%;
+        }
+
+        .nuvem:nth-child(1) {
+            --altura: 12%;
+            --largura: 230px;
+            --espessura: 62px;
+            --duracao: 12s;
+            --atraso: -49s;
+            --opacidade: 0.78;
+        }
+
+        .nuvem:nth-child(2) {
+            --altura: 31%;
+            --largura: 175px;
+            --espessura: 48px;
+            --duracao: 16s;
+            --atraso: -18s;
+            --opacidade: 0.58;
+        }
+
+        .nuvem:nth-child(3) {
+            --altura: 54%;
+            --largura: 285px;
+            --espessura: 72px;
+            --duracao: 19s;
+            --atraso: -72s;
+            --opacidade: 0.68;
+        }
+
+        .nuvem:nth-child(4) {
+            --altura: 76%;
+            --largura: 205px;
+            --espessura: 55px;
+            --duracao: 14s;
+            --atraso: -35s;
+            --opacidade: 0.52;
+        }
+
+        .nuvem:nth-child(5) {
+            --altura: 91%;
+            --largura: 150px;
+            --espessura: 42px;
+            --duracao: 17s;
+            --atraso: -61s;
+            --opacidade: 0.62;
+        }
+
+        @keyframes atravessar-ceu {
+            from { left: -390px; }
+            to { left: calc(100vw + 390px); }
+        }
+
+        .balao-trajeto {
+            position: absolute;
+            z-index: 1;
+            top: 29%;
+            left: -130px;
+            width: 90px;
+            height: 150px;
+            animation: atravessar-balao 48s linear -17s infinite;
+            will-change: left;
+        }
+
+        .balao {
+            position: absolute;
+            top: 0;
+            left: 7px;
+            width: 76px;
+            height: 91px;
+            background: linear-gradient(90deg, #ff6b6b 0 25%, #ffd166 25% 50%, #45c6b0 50% 75%, #a88af2 75% 100%);
+            border: 2px solid rgba(255, 255, 255, 0.92);
+            border-radius: 50% 50% 46% 46% / 58% 58% 42% 42%;
+            box-shadow: 0 8px 18px rgba(42, 94, 132, 0.2);
+            animation: balanco-balao 3.2s ease-in-out infinite alternate;
+        }
+
+        .balao::before {
+            position: absolute;
+            right: 28px;
+            bottom: -5px;
+            left: 28px;
+            height: 10px;
+            content: "";
+            background: #e95e65;
+            border-radius: 50%;
+        }
+
+        .cordas-balao {
+            position: absolute;
+            top: 86px;
+            left: 27px;
+            width: 2px;
+            height: 22px;
+            background: #865b48;
+            box-shadow: 24px 0 #865b48;
+        }
+
+        .cesto-balao {
+            position: absolute;
+            top: 107px;
+            left: 23px;
+            width: 31px;
+            height: 24px;
+            background: linear-gradient(90deg, #c87549, #e49a5f 50%, #c87549);
+            border: 2px solid #a85f3d;
+            border-radius: 4px 4px 8px 8px;
+            box-shadow: inset 0 4px rgba(255, 220, 165, 0.38);
+        }
+
+        @keyframes atravessar-balao {
+            from { left: -130px; }
+            to { left: calc(100vw + 130px); }
+        }
+
+        @keyframes balanco-balao {
+            from { transform: translateY(0); }
+            to { transform: translateY(-14px); }
+        }
+
+        .aviao-trajeto {
+            position: absolute;
+            z-index: 2;
+            top: 58%;
+            right: -350px;
+            width: 310px;
+            height: 90px;
+            animation: atravessar-aviao 10s linear -4s infinite;
+            will-change: right;
+        }
+
+        .aviao {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 132px;
+            height: 72px;
+            filter: drop-shadow(0 5px 5px rgba(39, 91, 128, 0.2));
+            transform: scaleX(-1);
+            z-index: 3;
+        }
+
+        .corda-banner {
+            position: absolute;
+            top: 35px;
+            left: 100px;
+            width: 90px;
+            height: 3px;
+            background: linear-gradient(90deg, #8d9ca7 0%, #5a6d7e 100%);
+            border-radius: 999px;
+            box-shadow: 0 0 0 1px rgba(83, 104, 118, 0.14);
+            transform-origin: left center;
+            animation: balanco-corda 2.5s ease-in-out infinite alternate;
+            z-index: 2;
+        }
+
+        .faixa-senai {
+            position: absolute;
+            top: 14px;
+            left: 190px;
+            width: 150px;
+            height: 46px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 22px;
+            font-weight: 900;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            background: linear-gradient(180deg, #ef1f2f 0%, #d71327 100%);
+            border: 4px solid rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(31, 50, 64, 0.18);
+            transform: rotate(-2deg) skewX(-8deg);
+            animation: flutuar-faixa 2.5s ease-in-out infinite alternate;
+            transform-origin: left center;
+            z-index: 1;
+        }
+
+        .faixa-senai span {
+            transform: skewX(8deg);
+            text-shadow: 0 2px 0 rgba(90, 8, 16, 0.38);
+        }
+
+        .faixa-senai::before,
+        .faixa-senai::after {
+            position: absolute;
+            left: 12px;
+            right: 12px;
+            height: 3px;
+            content: "";
+            background: rgba(255, 255, 255, 0.18);
+            border-radius: 999px;
+        }
+
+        .faixa-senai::before {
+            top: 5px;
+        }
+
+        .faixa-senai::after {
+            bottom: 5px;
+        }
+
+        .asa-aviao {
+            position: absolute;
+            top: 8px;
+            left: 42px;
+            width: 48px;
+            height: 56px;
+            background: linear-gradient(90deg, #f7fbff, #c6e8fa 50%, #f7fbff);
+            border: 1px solid #a7d5ef;
+            border-radius: 45% 45% 24% 24%;
+            transform: skewX(-16deg);
+        }
+
+        .cauda-aviao {
+            position: absolute;
+            top: 15px;
+            left: 9px;
+            width: 30px;
+            height: 38px;
+            background: #e6f5ff;
+            border: 1px solid #a7d5ef;
+            border-radius: 55% 20% 20% 55%;
+            transform: skewX(-18deg);
+        }
+
+        .corpo-aviao {
+            position: absolute;
+            z-index: 1;
+            top: 27px;
+            left: 7px;
+            width: 118px;
+            height: 19px;
+            background: linear-gradient(180deg, #ffffff 0 55%, #ff967b 56% 76%, #f8fcff 77%);
+            border: 1px solid #a7d5ef;
+            border-radius: 55% 48% 48% 55%;
+        }
+
+        .janelas-aviao {
+            position: absolute;
+            top: 5px;
+            left: 39px;
+            width: 58px;
+            height: 5px;
+            background: radial-gradient(circle, #58acd5 0 2px, transparent 2.5px) left center / 14px 5px repeat-x;
+        }
+
+        @keyframes flutuar-faixa {
+            from { transform: translateY(0px) rotate(1deg); }
+            to { transform: translateY(4px) rotate(-2deg); }
+        }
+
+        @keyframes balanco-corda {
+            from { transform: rotate(3deg); }
+            to { transform: rotate(-1deg); }
+        }
+
+        @keyframes atravessar-aviao {
+            from { right: -350px; }
+            to { right: calc(100vw + 150px); }
+        }
+
+        header {
+            position: relative;
+            z-index: 1;
+            padding: 32px 20px 29px;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(226, 246, 255, 0.74), rgba(255, 255, 255, 0.52));
+            border-bottom: 1px solid rgba(255, 255, 255, 0.56);
+        }
+
+        header h1 {
+            margin: 0;
+            color: #087e77;
+            font-size: 34px;
+            letter-spacing: 0.2px;
+        }
+
+        header p {
+            margin: 10px 0 0;
+            color: var(--texto-suave);
+            font-size: 18px;
+        }
+
+        main {
+            position: relative;
+            z-index: 1;
+            max-width: 950px;
+            margin: auto;
+            padding: 32px 20px;
+        }
+
+        .painel {
+            margin-bottom: 24px;
+            padding: 26px;
+            background: var(--superficie);
+            border: 1px solid var(--borda);
+            border-radius: 20px;
+            box-shadow: 0 16px 40px rgba(31, 94, 132, 0.16);
+        }
+
+        .painel h2 {
+            margin-top: 0;
+            color: var(--lilas);
+        }
+
+        .controles {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+            align-items: end;
+        }
+
+        .campo {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            gap: 9px;
+            min-width: 220px;
+        }
+
+        label {
+            color: var(--texto);
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        input,
+        select {
+            width: 100%;
+            min-height: 50px;
+            padding: 12px 14px;
+            color: var(--texto);
+            font: inherit;
+            font-size: 16px;
+            background-color: #fff;
+            border: 1px solid #9fc5de;
+            border-radius: 11px;
+        }
+
+        input:hover,
+        select:hover {
+            border-color: var(--lilas);
+        }
+
+        input::file-selector-button {
+            margin-right: 10px;
+            padding: 8px 11px;
+            color: #173b58;
+            font: inherit;
+            font-weight: bold;
+            background: #b9e3ff;
+            border: 1px solid #83bce4;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        input::file-selector-button:hover {
+            background: #9fd5fb;
+        }
+
+        button {
+            padding: 14px 22px;
+            color: #082b43;
+            font: inherit;
+            font-size: 16px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #3c9ef0, #62b7fa);
+            border: 0;
+            border-radius: 11px;
+            cursor: pointer;
+            box-shadow: 0 5px 16px rgba(22, 116, 207, 0.24);
+            transition: transform 0.18s ease, filter 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        button:hover:not(:disabled) {
+            filter: brightness(1.08);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(22, 116, 207, 0.3);
+        }
+
+        button:focus-visible,
+        input:focus-visible,
+        select:focus-visible {
+            outline: 3px solid var(--amarelo);
+            outline-offset: 3px;
+        }
+
+        button:disabled {
+            color: #536879;
+            background: #dce8ef;
+            box-shadow: none;
+            cursor: not-allowed;
+        }
+
+        #areaJogo {
+            display: none;
+        }
+
+        .instrucao {
+            color: var(--texto-suave);
+            text-align: center;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        #mensagem {
+            min-height: 40px;
+            margin: 20px 0;
+            color: #795000;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .sucesso {
+            color: var(--menta) !important;
+            font-size: 26px !important;
+        }
+
+        #quebraCabeca {
+            display: grid;
+            width: min(720px, 95vw);
+            margin: 25px auto;
+            overflow: hidden;
+            background: #d9effd;
+            border: 5px solid #438fbd;
+            border-radius: 14px;
+            box-shadow: 0 12px 30px rgba(31, 94, 132, 0.22);
+        }
+
+        .peca {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            background-repeat: no-repeat;
+            border: 2px solid #d9effd;
+            border-radius: 0;
+            box-shadow: none;
+            cursor: pointer;
+        }
+
+        .peca:hover:not(:disabled) {
+            filter: brightness(1.08);
+            transform: none;
+            box-shadow: none;
+        }
+
+        .peca.selecionada {
+            z-index: 2;
+            outline: 6px solid var(--coral);
+            outline-offset: -6px;
+        }
+
+        .acoes {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .acoes button:nth-child(1):not(:disabled) {
+            color: #563800;
+            background: linear-gradient(135deg, #ffd166, #ffbd59);
+            box-shadow: 0 5px 16px rgba(230, 159, 42, 0.22);
+        }
+
+        .acoes button:nth-child(2):not(:disabled) {
+            color: #073e47;
+            background: linear-gradient(135deg, #43d6c3, #76e5d3);
+            box-shadow: 0 5px 16px rgba(24, 166, 151, 0.2);
+        }
+
+        .acoes button:nth-child(3):not(:disabled) {
+            color: #54281f;
+            background: linear-gradient(135deg, #ff9278, #ffae8e);
+            box-shadow: 0 5px 16px rgba(231, 111, 85, 0.2);
+        }
+
+        #fotoOriginalContainer {
+            display: none;
+            margin-top: 35px;
+            text-align: center;
+        }
+
+        #fotoOriginal {
+            max-width: 100%;
+            max-height: 650px;
+            background: var(--superficie-elevada);
+            border: 5px solid var(--lilas);
+            border-radius: 16px;
+            box-shadow: 0 12px 32px rgba(31, 94, 132, 0.24);
+        }
+
+        @media (max-width: 650px) {
+            header {
+                padding: 26px 18px 23px;
+            }
+
+            header h1 {
+                font-size: 27px;
+            }
+
+            main {
+                padding: 22px 14px;
+            }
+
+            .painel {
+                padding: 20px 16px;
+                border-radius: 16px;
+            }
+
+            .controles {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .campo {
+                width: 100%;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+
+</head>
+
+
+
+<body>
+
+
+<div class="ceu-animado" aria-hidden="true">
+    <div class="nuvem"></div>
+    <div class="nuvem"></div>
+    <div class="nuvem"></div>
+    <div class="nuvem"></div>
+    <div class="nuvem"></div>
+
+    <div class="balao-trajeto">
+        <div class="balao">
+            <div class="cordas-balao"></div>
+            <div class="cesto-balao"></div>
+        </div>
+    </div>
+
+    <div class="aviao-trajeto">
+        <div class="aviao">
+            <div class="asa-aviao"></div>
+            <div class="cauda-aviao"></div>
+            <div class="corpo-aviao">
+                <div class="janelas-aviao"></div>
+            </div>
+        </div>
+        <div class="corda-banner"></div>
+        <div class="faixa-senai"><span>SENAI</span></div>
+    </div>
+</div>
+
+
+<!-- =========================================================
+     CABEÇALHO
+========================================================= -->
+
+<header>
+
+    <h1>🧩 Memórias em Peças</h1>
+
+    <p>
+        Transformando uma fotografia especial
+        em um quebra-cabeça.
+    </p>
+
+</header>
+
+
+
+<main>
+
+
+    <!-- =====================================================
+         PREPARAR ATIVIDADE
+    ====================================================== -->
+
+    <section class="painel">
+
+        <h2>Preparar atividade</h2>
+
+
+        <div class="controles">
+
+
+            <!-- ESCOLHER FOTO -->
+
+            <div class="campo">
+
+                <label for="arquivoFoto">
+                    Escolha uma fotografia:
+                </label>
+
+
+                <input
+                    type="file"
+                    id="arquivoFoto"
+                    accept="image/*"
+                >
+
+            </div>
+
+
+
+            <!-- ESCOLHER NÍVEL -->
+
+            <div class="campo">
+
+                <label for="dificuldade">
+                    Escolha o nível:
+                </label>
+
+
+                <select id="dificuldade">
+
+                    <option value="4">
+                        Nível 1 — 4 peças
+                    </option>
+
+                    <option value="6">
+                        Nível 2 — 6 peças
+                    </option>
+
+                    <option value="9">
+                        Nível 3 — 9 peças
+                    </option>
+
+                    <option value="12">
+                        Nível 4 — 12 peças
+                    </option>
+
+                    <option value="16">
+                        Nível 5 — 16 peças
+                    </option>
+
+                    <option value="18">
+                        Nível 6 — 18 peças
+                    </option>
+
+                </select>
+
+            </div>
+
+
+
+            <!-- COMEÇAR -->
+
+            <button id="btnComecar">
+
+                ▶ Começar
+
+            </button>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         ÁREA DO JOGO
+    ====================================================== -->
+
+    <section
+        class="painel"
+        id="areaJogo"
+    >
+
+
+        <h2 style="text-align: center;">
+
+            Monte a fotografia
+
+        </h2>
+
+
+        <p class="instrucao">
+
+            Escolha uma peça.<br>
+
+            Depois escolha outra peça para trocar
+            as duas de lugar.
+
+        </p>
+
+
+
+        <!-- MENSAGENS -->
+
+        <div id="mensagem"></div>
+
+
+
+        <!-- QUEBRA-CABEÇA -->
+
+        <div id="quebraCabeca"></div>
+
+
+
+        <!-- AÇÕES -->
+
+        <div class="acoes">
+
+
+            <button id="btnMisturar">
+
+                🔀 Misturar novamente
+
+            </button>
+
+
+            <button id="btnVerFoto">
+
+                🖼️ Ver fotografia
+
+            </button>
+
+
+            <button
+                id="btnImprimir"
+                disabled
+            >
+
+                🖨️ Imprimir fotografia
+
+            </button>
+
+
+        </div>
+
+
+
+        <!-- FOTO ORIGINAL -->
+
+        <div id="fotoOriginalContainer">
+
+
+            <h2>
+                ❤️ Sua memória especial
+            </h2>
+
+
+            <img
+                id="fotoOriginal"
+                alt="Fotografia escolhida para o quebra-cabeça"
+            >
+
+
+        </div>
+
+
+    </section>
+
+
+</main>
+
+
+
+<script>
+
+
+    // =========================================================
+    // ELEMENTOS DO HTML
+    // =========================================================
+
+    const arquivoFoto =
+        document.getElementById("arquivoFoto");
+
+
+    const dificuldade =
+        document.getElementById("dificuldade");
+
+
+    const btnComecar =
+        document.getElementById("btnComecar");
+
+
+    const btnMisturar =
+        document.getElementById("btnMisturar");
+
+
+    const btnVerFoto =
+        document.getElementById("btnVerFoto");
+
+
+    const btnImprimir =
+        document.getElementById("btnImprimir");
+
+
+    const areaJogo =
+        document.getElementById("areaJogo");
+
+
+    const quebraCabeca =
+        document.getElementById("quebraCabeca");
+
+
+    const mensagem =
+        document.getElementById("mensagem");
+
+
+    const fotoOriginalContainer =
+        document.getElementById("fotoOriginalContainer");
+
+
+    const fotoOriginal =
+        document.getElementById("fotoOriginal");
+
+
+
+    // =========================================================
+    // VARIÁVEIS DO JOGO
+    // =========================================================
+
+
+    /*
+        Guarda a fotografia escolhida.
+    */
+
+    let imagemURL = null;
+
+
+
+    /*
+        Guarda a posição das peças.
+
+        Exemplo correto:
+
+        [0, 1, 2, 3]
+
+        Exemplo embaralhado:
+
+        [2, 0, 3, 1]
+    */
+
+    let pecas = [];
+
+
+
+    /*
+        Guarda a primeira peça
+        selecionada pelo participante.
+    */
+
+    let primeiraPecaSelecionada = null;
+
+
+
+    /*
+        Quantidade de linhas e colunas.
+    */
+
+    let linhas = 2;
+
+    let colunas = 2;
+
+
+
+    /*
+        Proporção original da fotografia.
+    */
+
+    let proporcaoImagem = 1;
+
+
+
+    // =========================================================
+    // BOTÃO COMEÇAR
+    // =========================================================
+
+    btnComecar.addEventListener(
+        "click",
+        function () {
+
+
+            /*
+                Pega o arquivo escolhido.
+            */
+
+            const arquivo =
+                arquivoFoto.files[0];
+
+
+
+            /*
+                Se não escolheu fotografia.
+            */
+
+            if (!arquivo) {
+
+                alert(
+                    "Escolha uma fotografia primeiro."
+                );
+
+                return;
+
+            }
+
+
+
+            /*
+                FileReader lê a fotografia
+                diretamente no navegador.
+
+                A imagem não é enviada
+                para nenhum servidor.
+            */
+
+            const leitor =
+                new FileReader();
+
+
+
+            leitor.onload =
+                function (evento) {
+
+
+                    /*
+                        Guarda a fotografia
+                        em memória.
+                    */
+
+                    imagemURL =
+                        evento.target.result;
+
+
+
+                    /*
+                        Mostra a mesma fotografia
+                        na área de foto original.
+                    */
+
+                    fotoOriginal.src =
+                        imagemURL;
+
+
+
+                    /*
+                        Criamos temporariamente
+                        uma imagem para descobrir
+                        largura e altura.
+                    */
+
+                    const img =
+                        new Image();
+
+
+
+                    img.onload =
+                        function () {
+
+
+                            /*
+                                Calcula a proporção:
+
+                                largura / altura
+                            */
+
+                            proporcaoImagem =
+
+                                img.naturalWidth /
+                                img.naturalHeight;
+
+
+
+                            /*
+                                Define linhas e colunas
+                                conforme o nível.
+                            */
+
+                            configurarDificuldade();
+
+
+
+                            /*
+                                Inicia o jogo.
+                            */
+
+                            iniciarJogo();
+
+                        };
+
+
+
+                    img.src =
+                        imagemURL;
+
+                };
+
+
+
+            /*
+                Faz a leitura do arquivo.
+            */
+
+            leitor.readAsDataURL(
+                arquivo
+            );
+
+        }
+    );
+
+
+
+    // =========================================================
+    // CONFIGURAR DIFICULDADE
+    // =========================================================
+
+    function configurarDificuldade() {
+
+
+        const quantidade =
+            Number(dificuldade.value);
+
+
+
+        /*
+            Descobre se a fotografia
+            é horizontal ou vertical.
+        */
+
+        const fotoHorizontal =
+            proporcaoImagem >= 1;
+
+
+
+        // -----------------------------------------------------
+        // 4 PEÇAS
+        // -----------------------------------------------------
+
+        if (quantidade === 4) {
+
+            linhas = 2;
+
+            colunas = 2;
+
+        }
+
+
+
+        // -----------------------------------------------------
+        // 6 PEÇAS
+        // -----------------------------------------------------
+
+        else if (quantidade === 6) {
+
+
+            if (fotoHorizontal) {
+
+                linhas = 2;
+
+                colunas = 3;
+
+            }
+
+            else {
+
+                linhas = 3;
+
+                colunas = 2;
+
+            }
+
+        }
+
+
+
+        // -----------------------------------------------------
+        // 9 PEÇAS
+        // -----------------------------------------------------
+
+        else if (quantidade === 9) {
+
+            linhas = 3;
+
+            colunas = 3;
+
+        }
+
+
+
+        // -----------------------------------------------------
+        // 12 PEÇAS
+        // -----------------------------------------------------
+
+        else if (quantidade === 12) {
+
+
+            if (fotoHorizontal) {
+
+                linhas = 3;
+
+                colunas = 4;
+
+            }
+
+            else {
+
+                linhas = 4;
+
+                colunas = 3;
+
+            }
+
+        }
+
+
+
+        // -----------------------------------------------------
+        // 16 PEÇAS
+        // -----------------------------------------------------
+
+        else if (quantidade === 16) {
+
+            linhas = 4;
+
+            colunas = 4;
+
+        }
+
+
+
+        // -----------------------------------------------------
+        // 18 PEÇAS
+        // -----------------------------------------------------
+
+        else if (quantidade === 18) {
+
+
+            if (fotoHorizontal) {
+
+                linhas = 3;
+
+                colunas = 6;
+
+            }
+
+            else {
+
+                linhas = 6;
+
+                colunas = 3;
+
+            }
+
+        }
+
+    }
+
+
+
+    // =========================================================
+    // INICIAR JOGO
+    // =========================================================
+
+    function iniciarJogo() {
+
+
+        /*
+            Nenhuma peça começa selecionada.
+        */
+
+        primeiraPecaSelecionada =
+            null;
+
+
+
+        /*
+            Mensagem inicial.
+        */
+
+        mensagem.textContent =
+
+            "Escolha duas peças para trocar de lugar.";
+
+
+
+        mensagem.classList.remove(
+            "sucesso"
+        );
+
+
+
+        /*
+            Impressão só ficará disponível
+            quando o jogo for concluído.
+        */
+
+        btnImprimir.disabled =
+            true;
+
+
+
+        /*
+            Esconde fotografia original.
+        */
+
+        fotoOriginalContainer.style.display =
+            "none";
+
+
+
+        btnVerFoto.textContent =
+            "🖼️ Ver fotografia";
+
+
+
+        /*
+            Mostra a área do jogo.
+        */
+
+        areaJogo.style.display =
+            "block";
+
+
+
+        /*
+            Quantidade total de peças.
+        */
+
+        const quantidade =
+            linhas * colunas;
+
+
+
+        /*
+            Cria a sequência correta.
+
+            Exemplo:
+
+            0
+            1
+            2
+            3
+        */
+
+        pecas = [];
+
+
+        for (
+            let i = 0;
+            i < quantidade;
+            i++
+        ) {
+
+            pecas.push(i);
+
+        }
+
+
+
+        /*
+            Mistura as peças.
+        */
+
+        embaralhar();
+
+
+
+        /*
+            Monta o quebra-cabeça
+            na tela.
+        */
+
+        desenharQuebraCabeca();
+
+
+
+        /*
+            Leva a tela até o jogo.
+        */
+
+        areaJogo.scrollIntoView({
+
+            behavior: "smooth"
+
+        });
+
+    }
+
+
+
+    // =========================================================
+    // EMBARALHAR
+    // =========================================================
+
+    function embaralhar() {
+
+
+        /*
+            O DO / WHILE garante que
+            o jogo nunca comece já montado.
+        */
+
+        do {
+
+
+            /*
+                Algoritmo Fisher-Yates
+                para embaralhamento.
+            */
+
+            for (
+                let i = pecas.length - 1;
+                i > 0;
+                i--
+            ) {
+
+
+                const j =
+                    Math.floor(
+                        Math.random() *
+                        (i + 1)
+                    );
+
+
+
+                /*
+                    Troca duas posições.
+                */
+
+                [
+                    pecas[i],
+                    pecas[j]
+                ]
+                =
+                [
+                    pecas[j],
+                    pecas[i]
+                ];
+
+            }
+
+
+        }
+        while (estaCompleto());
+
+    }
+
+
+
+    // =========================================================
+    // DESENHAR QUEBRA-CABEÇA
+    // =========================================================
+
+    function desenharQuebraCabeca() {
+
+
+        /*
+            Limpa o quebra-cabeça anterior.
+        */
+
+        quebraCabeca.innerHTML =
+            "";
+
+
+
+        /*
+            Define a quantidade
+            de colunas do Grid.
+        */
+
+        quebraCabeca.style.gridTemplateColumns =
+
+            `repeat(${colunas}, 1fr)`;
+
+
+
+        /*
+            Define a quantidade
+            de linhas do Grid.
+        */
+
+        quebraCabeca.style.gridTemplateRows =
+
+            `repeat(${linhas}, 1fr)`;
+
+
+
+        /*
+            Mantém a mesma proporção
+            da fotografia original.
+        */
+
+        quebraCabeca.style.aspectRatio =
+
+            proporcaoImagem;
+
+
+
+        /*
+            Percorre todas as peças.
+        */
+
+        pecas.forEach(
+
+            function (
+                numeroPeca,
+                posicaoAtual
+            ) {
+
+
+                /*
+                    Cria um botão que
+                    representará uma peça.
+                */
+
+                const peca =
+
+                    document.createElement(
+                        "button"
+                    );
+
+
+
+                peca.classList.add(
+                    "peca"
+                );
+
+
+
+                /*
+                    Descobre onde aquela
+                    parte da foto deveria estar.
+                */
+
+                const linhaOriginal =
+
+                    Math.floor(
+                        numeroPeca /
+                        colunas
+                    );
+
+
+
+                const colunaOriginal =
+
+                    numeroPeca %
+                    colunas;
+
+
+
+                /*
+                    Todas as peças usam
+                    a mesma fotografia.
+                */
+
+                peca.style.backgroundImage =
+
+                    `url("${imagemURL}")`;
+
+
+
+                /*
+                    Aumenta a fotografia
+                    para ocupar todo o Grid.
+                */
+
+                peca.style.backgroundSize =
+
+                    `${colunas * 100}%
+                     ${linhas * 100}%`;
+
+
+
+                /*
+                    Calcula a posição horizontal
+                    da parte da fotografia.
+                */
+
+                let posicaoX = 0;
+
+
+                if (colunas > 1) {
+
+                    posicaoX =
+
+                        (
+                            colunaOriginal /
+                            (colunas - 1)
+                        )
+                        * 100;
+
+                }
+
+
+
+                /*
+                    Calcula a posição vertical.
+                */
+
+                let posicaoY = 0;
+
+
+                if (linhas > 1) {
+
+                    posicaoY =
+
+                        (
+                            linhaOriginal /
+                            (linhas - 1)
+                        )
+                        * 100;
+
+                }
+
+
+
+                /*
+                    Mostra somente a parte
+                    correta da imagem.
+                */
+
+                peca.style.backgroundPosition =
+
+                    `${posicaoX}%
+                     ${posicaoY}%`;
+
+
+
+                /*
+                    Acessibilidade.
+                */
+
+                peca.setAttribute(
+
+                    "aria-label",
+
+                    `Peça ${posicaoAtual + 1}`
+
+                );
+
+
+
+                /*
+                    Evento de clique.
+                */
+
+                peca.addEventListener(
+
+                    "click",
+
+                    function () {
+
+
+                        selecionarPeca(
+                            posicaoAtual
+                        );
+
+                    }
+
+                );
+
+
+
+                /*
+                    Adiciona a peça
+                    ao quebra-cabeça.
+                */
+
+                quebraCabeca.appendChild(
+                    peca
+                );
+
+            }
+
+        );
+
+    }
+
+
+
+    // =========================================================
+    // SELECIONAR PEÇA
+    // =========================================================
+
+    function selecionarPeca(
+        posicao
+    ) {
+
+
+        /*
+            PRIMEIRO CLIQUE
+        */
+
+        if (
+            primeiraPecaSelecionada === null
+        ) {
+
+
+            primeiraPecaSelecionada =
+                posicao;
+
+
+
+            mensagem.textContent =
+
+                "Agora escolha outra peça.";
+
+
+
+            destacarSelecionada();
+
+
+            return;
+
+        }
+
+
+
+        /*
+            SE CLICAR NOVAMENTE
+            NA MESMA PEÇA
+        */
+
+        if (
+            primeiraPecaSelecionada ===
+            posicao
+        ) {
+
+
+            primeiraPecaSelecionada =
+                null;
+
+
+
+            mensagem.textContent =
+
+                "Escolha duas peças para trocar de lugar.";
+
+
+
+            desenharQuebraCabeca();
+
+
+            return;
+
+        }
+
+
+
+        /*
+            TROCA AS DUAS PEÇAS
+        */
+
+        const temporaria =
+
+            pecas[
+                primeiraPecaSelecionada
+            ];
+
+
+
+        pecas[
+            primeiraPecaSelecionada
+        ]
+        =
+        pecas[
+            posicao
+        ];
+
+
+
+        pecas[
+            posicao
+        ]
+        =
+        temporaria;
+
+
+
+        /*
+            Limpa a seleção.
+        */
+
+        primeiraPecaSelecionada =
+            null;
+
+
+
+        /*
+            Redesenha o jogo.
+        */
+
+        desenharQuebraCabeca();
+
+
+
+        /*
+            Verifica se terminou.
+        */
+
+        if (estaCompleto()) {
+
+            jogoConcluido();
+
+        }
+
+        else {
+
+            mensagem.textContent =
+
+                "Muito bem! Continue montando.";
+
+        }
+
+    }
+
+
+
+    // =========================================================
+    // DESTACAR PEÇA SELECIONADA
+    // =========================================================
+
+    function destacarSelecionada() {
+
+
+        const elementos =
+
+            quebraCabeca.querySelectorAll(
+                ".peca"
+            );
+
+
+
+        elementos.forEach(
+
+            function (
+                elemento,
+                indice
+            ) {
+
+
+                if (
+                    indice ===
+                    primeiraPecaSelecionada
+                ) {
+
+
+                    elemento.classList.add(
+                        "selecionada"
+                    );
+
+                }
+
+            }
+
+        );
+
+    }
+
+
+
+    // =========================================================
+    // VERIFICAR SE ESTÁ COMPLETO
+    // =========================================================
+
+    function estaCompleto() {
+
+
+        /*
+            Cada posição precisa
+            possuir o mesmo número.
+
+            Exemplo:
+
+            posição 0 = peça 0
+            posição 1 = peça 1
+            posição 2 = peça 2
+        */
+
+        for (
+            let i = 0;
+            i < pecas.length;
+            i++
+        ) {
+
+
+            if (
+                pecas[i] !== i
+            ) {
+
+                return false;
+
+            }
+
+        }
+
+
+
+        return true;
+
+    }
+
+
+
+    // =========================================================
+    // JOGO CONCLUÍDO
+    // =========================================================
+
+    function jogoConcluido() {
+
+
+        mensagem.textContent =
+
+            "🎉 Parabéns! Você completou uma memória especial!";
+
+
+
+        mensagem.classList.add(
+            "sucesso"
+        );
+
+
+
+        /*
+            Libera impressão.
+        */
+
+        btnImprimir.disabled =
+            false;
+
+
+
+        /*
+            Mostra a fotografia inteira.
+        */
+
+        fotoOriginalContainer.style.display =
+            "block";
+
+
+
+        btnVerFoto.textContent =
+            "🙈 Esconder fotografia";
+
+
+
+        /*
+            Depois de meio segundo,
+            leva a tela até a fotografia.
+        */
+
+        setTimeout(
+
+            function () {
+
+
+                fotoOriginalContainer.scrollIntoView({
+
+                    behavior: "smooth"
+
+                });
+
+            },
+
+            500
+
+        );
+
+    }
+
+
+
+    // =========================================================
+    // MISTURAR NOVAMENTE
+    // =========================================================
+
+    btnMisturar.addEventListener(
+
+        "click",
+
+        function () {
+
+
+            primeiraPecaSelecionada =
+                null;
+
+
+
+            /*
+                Embaralha.
+            */
+
+            embaralhar();
+
+
+
+            /*
+                Redesenha.
+            */
+
+            desenharQuebraCabeca();
+
+
+
+            mensagem.textContent =
+
+                "Vamos montar novamente!";
+
+
+
+            mensagem.classList.remove(
+                "sucesso"
+            );
+
+
+
+            /*
+                Desabilita impressão novamente.
+            */
+
+            btnImprimir.disabled =
+                true;
+
+
+
+            /*
+                Esconde foto.
+            */
+
+            fotoOriginalContainer.style.display =
+                "none";
+
+
+
+            btnVerFoto.textContent =
+                "🖼️ Ver fotografia";
+
+        }
+
+    );
+
+
+
+    // =========================================================
+    // MOSTRAR OU ESCONDER FOTOGRAFIA
+    // =========================================================
+
+    btnVerFoto.addEventListener(
+
+        "click",
+
+        function () {
+
+
+            if (
+                fotoOriginalContainer.style.display ===
+                "block"
+            ) {
+
+
+                fotoOriginalContainer.style.display =
+                    "none";
+
+
+                btnVerFoto.textContent =
+                    "🖼️ Ver fotografia";
+
+            }
+
+            else {
+
+
+                fotoOriginalContainer.style.display =
+                    "block";
+
+
+                btnVerFoto.textContent =
+                    "🙈 Esconder fotografia";
+
+            }
+
+        }
+
+    );
+
+
+
+    // =========================================================
+    // IMPRIMIR FOTOGRAFIA
+    // =========================================================
+
+    btnImprimir.addEventListener(
+
+        "click",
+
+        function () {
+
+
+            /*
+                Abre uma nova janela
+                somente com a fotografia.
+            */
+
+            const janela =
+
+                window.open(
+                    "",
+                    "_blank"
+                );
+
+
+
+            janela.document.write(`
+
+                <!DOCTYPE html>
+
+                <html lang="pt-BR">
+
+                <head>
+
+                    <meta charset="UTF-8">
+
+                    <title>
+                        Memórias em Peças
+                    </title>
+
+
+                    <style>
+
+                        body {
+
+                            margin: 0;
+
+                            display: flex;
+
+                            justify-content: center;
+
+                            align-items: center;
+
+                            min-height: 100vh;
+
+                            background-color: white;
+
+                        }
+
+
+                        img {
+
+                            max-width: 95%;
+
+                            max-height: 95vh;
+
+                            object-fit: contain;
+
+                        }
+
+                    </style>
+
+                </head>
+
+
+                <body>
+
+
+                    <img
+                        src="${imagemURL}"
+                        alt="Memória especial"
+                    >
+
+
+                    <script>
+
+                        window.onload =
+                            function () {
+
+                                window.print();
+
+                            };
+
+                    <\/script>
+
+
+                </body>
+
+                </html>
+
+            `);
+
+
+
+            janela.document.close();
+
+        }
+
+    );
+
+
+</script>
+
+
+</body>
+
+</html>
